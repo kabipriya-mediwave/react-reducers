@@ -18,12 +18,12 @@ const TodoAddForm = ({ handleAdd }) => {
             setText(e.target.value);
           }}
           value={text}
-          minLength="5"
-          maxLength="10"
+          minLength="6"
+          maxLength="15"
           required
         />
       </label>
-      <button>ADD</button>
+      <button type="submit">Add</button>
     </form>
   );
 };

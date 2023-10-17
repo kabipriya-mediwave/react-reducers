@@ -1,18 +1,16 @@
-import { useReducer } from "react";
-
+import { useReducer, useEffect } from "react";
 import TodoList from "./components/TodoList";
 import TodoAddForm from "./components/TodoAddForm";
-// import Update from "./components/Update";
+import "./app.css";
 
-/*
-{
-  id: 123,
-  text: 'Foo',
-  isDone: false
-}
-*/
 function App() {
-  const [todos, dispatch] = useReducer(todoReducer, []);
+  const [todos, dispatch] = useReducer(todoReducer, [], (initial) => {
+    const localData = localStorage.getItem("todos");
+    return localData ? JSON.parse(localData) : initial;
+  });
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   function todoReducer(todos, action) {
     switch (action.type) {
@@ -27,6 +25,7 @@ function App() {
           },
         ];
       }
+
       case "TODO_DELETE": {
         const filtered = todos.filter((t) => t.id != action.value);
         return [...filtered];
@@ -37,16 +36,10 @@ function App() {
         if (idx !== -1) {
           newTodos[idx]["isEdit"] = true;
         }
+
         return newTodos;
       }
-      case "TODO_UPDATE": {
-        const newTodos = [...todos];
-        const idx = newTodos.findIndex((nt) => nt.id === action.value);
-        if (idx !== -1) {
-          newTodos[idx]["isEdit"] = false;
-        }
-        return newTodos;
-      }
+
       case "TODO_DONE": {
         const newTodos = [...todos];
         const idx = newTodos.findIndex((nt) => nt.id === action.value);
@@ -63,7 +56,15 @@ function App() {
         }
         return newTodos;
       }
-
+      case "TODO_UPDATE": {
+        const newTodos = [...todos];
+        const idx = newTodos.findIndex((nt) => nt.id === action.value.id);
+        if (idx !== -1) {
+          newTodos[idx]["text"] = action.value.newText;
+          newTodos[idx]["isEdit"] = false;
+        }
+        return newTodos;
+      }
       default: {
         throw Error("Unknown action: " + action.type);
       }
@@ -82,6 +83,12 @@ function App() {
       value: id,
     });
   }
+  function handleEdit(id) {
+    dispatch({
+      type: "TODO_EDIT",
+      value: id,
+    });
+  }
   function handleDone(id, type) {
     if (type == "done") {
       dispatch({
@@ -96,16 +103,11 @@ function App() {
     }
   }
 
-  function handleEdit(id) {
-    dispatch({
-      type: "TODO_EDIT",
-      value: id,
-    });
-  }
-  function handleUpdate(value) {
+  function handleUpdate(id, newText) {
+   
     dispatch({
       type: "TODO_UPDATE",
-      value: value,
+      value: { id, newText },
     });
   }
 
@@ -116,9 +118,9 @@ function App() {
       <TodoAddForm handleAdd={handleAdd} />
       <TodoList
         todos={todos}
-        handleEdit={handleEdit}
         handleDelete={handleDelete}
         handleDone={handleDone}
+        handleEdit={handleEdit}
         handleUpdate={handleUpdate}
       />
     </>
@@ -126,34 +128,25 @@ function App() {
 }
 
 export default App;
-// import React, { useReducer } from 'react';
-// import Update from './update';
-// const initialState = {
-//   todos: [
-//     { id: 1, text: 'Todo 1', done: false },
-//     { id: 2, text: 'Todo 2', done: true },
-//     // Add more todos as needed
-//   ],
-// };
-// const todoReducer = (state, action) => {
-//   switch (action.type) {
-//     case 'UPDATE_TODO':
-//       return {
-//         todos: state.todos.map((todo) =>
-//           todo.id === action.id ? { ...todo, done: !todo.done } : todo
-//         ),
-//       };
-//     default:
-//       return state;
-//   }
-// };
-// const App = () => {
-//   const [state, dispatch] = useReducer(todoReducer, initialState);
+// import React, { useState } from "react";
+// import "./App.css";
+// import TodoList from "./components/TodoList";
+// function App() {
+//   const [todos, setTodos] = useState([
+//     // Your initial todos data here
+//   ]);
+//   // Function to handle drag and drop reordering
+//   const handleDragDrop = (dragIndex, dropIndex) => {
+//     const updatedTodos = [...todos];
+//     const [draggedTodo] = updatedTodos.splice(dragIndex, 1);
+//     updatedTodos.splice(dropIndex, 0, draggedTodo);
+//     setTodos(updatedTodos);
+//   };
 //   return (
-//     <div>
-//       <h1>Todo List</h1>
-//       <Update todos={state.todos} dispatch={dispatch} />
+//     <div className="App">
+//       <h1>My Todo</h1>
+//       <TodoList todos={todos} onDragDrop={handleDragDrop} />
 //     </div>
 //   );
-// };
+// }
 // export default App;
