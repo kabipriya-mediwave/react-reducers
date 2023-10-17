@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from "react";
+import "./app.css";
 import TodoList from "./components/TodoList";
 import TodoAddForm from "./components/TodoAddForm";
-import "./app.css";
 
 function App() {
   const [todos, dispatch] = useReducer(todoReducer, [], (initial) => {
@@ -57,6 +57,14 @@ function App() {
         return newTodos;
       }
       case "TODO_UPDATE": {
+        // const update= [...todos]
+        // const newTodos = todos.map((todo) => {
+        //   if (todo.id === action.value.id) {
+        //     return { ...todo, text: action.value.newText, isEdit: false };
+        //   }
+        // });
+        // console.log(newTodos);
+        // return newTodos;
         const newTodos = [...todos];
         const idx = newTodos.findIndex((nt) => nt.id === action.value.id);
         if (idx !== -1) {
@@ -64,6 +72,9 @@ function App() {
           newTodos[idx]["isEdit"] = false;
         }
         return newTodos;
+      }
+      case "TODO_REORDER": {
+        return action.value; // Set the state to the new order of todos
       }
       default: {
         throw Error("Unknown action: " + action.type);
@@ -104,9 +115,17 @@ function App() {
   }
 
   function handleUpdate(id, newText) {
+    // Update the todos state to reflect the changes
     dispatch({
       type: "TODO_UPDATE",
       value: { id, newText },
+    });
+  }
+  function handleReorder(updatedTodos) {
+    // Dispatch the TODO_REORDER action to update the state
+    dispatch({
+      type: "TODO_REORDER",
+      value: updatedTodos,
     });
   }
 
@@ -121,6 +140,7 @@ function App() {
         handleDone={handleDone}
         handleEdit={handleEdit}
         handleUpdate={handleUpdate}
+        handleReorder={handleReorder}
       />
     </>
   );

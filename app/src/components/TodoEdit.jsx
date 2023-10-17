@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const EditForm = ({ text, onSave }) => {
+const TodoEdit = ({ text, onSave }) => {
   const [editedText, setEditedText] = useState(text);
 
   const handleSave = () => {
@@ -19,4 +19,4 @@ const EditForm = ({ text, onSave }) => {
   );
 };
 
-export default EditForm;
+export default TodoEdit;
