@@ -48,37 +48,3 @@ const TodoList = ({
 };
 
 export default TodoList;
-// import React from "react";
-// const TodoList = ({ todos, onDragDrop }) => {
-//   // Function to handle drag start
-//   const handleDragStart = (e, index) => {
-//     e.dataTransfer.setData("text/plain", index);
-//   };
-//   // Function to handle drag over
-//   const handleDragOver = (e, index) => {
-//     e.preventDefault();
-//   };
-//   // Function to handle drop
-//   const handleDrop = (e, index) => {
-//     e.preventDefault();
-//     const dragIndex = e.dataTransfer.getData("text/plain");
-//     onDragDrop(parseInt(dragIndex), index);
-//   };
-//   return (
-//     <div className="todo-list">
-//       {todos.map((todo, index) => (
-//         <div
-//           key={todo.id}
-//           className="todo"
-//           draggable
-//           onDragStart={(e) => handleDragStart(e, index)}
-//           onDragOver={(e) => handleDragOver(e, index)}
-//           onDrop={(e) => handleDrop(e, index)}
-//         >
-//           {todo.text}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-// export default TodoList;

@@ -104,7 +104,6 @@ function App() {
   }
 
   function handleUpdate(id, newText) {
-   
     dispatch({
       type: "TODO_UPDATE",
       value: { id, newText },
@@ -128,25 +127,3 @@ function App() {
 }
 
 export default App;
-// import React, { useState } from "react";
-// import "./App.css";
-// import TodoList from "./components/TodoList";
-// function App() {
-//   const [todos, setTodos] = useState([
-//     // Your initial todos data here
-//   ]);
-//   // Function to handle drag and drop reordering
-//   const handleDragDrop = (dragIndex, dropIndex) => {
-//     const updatedTodos = [...todos];
-//     const [draggedTodo] = updatedTodos.splice(dragIndex, 1);
-//     updatedTodos.splice(dropIndex, 0, draggedTodo);
-//     setTodos(updatedTodos);
-//   };
-//   return (
-//     <div className="App">
-//       <h1>My Todo</h1>
-//       <TodoList todos={todos} onDragDrop={handleDragDrop} />
-//     </div>
-//   );
-// }
-// export default App;
